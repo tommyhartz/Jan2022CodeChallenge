@@ -21,22 +21,6 @@ let Ranks = {
     "2": 2
 }
 
-let RanksArray = [
-    "A",
-    "K",
-    "Q",
-    "J",
-    "1",
-    "9",
-    "8",
-    "7",
-    "6",
-    "5",
-    "4",
-    "3",
-    "2"
-]
-
 let Types = {
     STRAIGHT_FLUSH: "straight-flush",
     FOUR_OF_A_KIND: "four-of-a-kind",
@@ -54,8 +38,6 @@ function hand(holeCards, commonCards) {
     let cards = holeCards.concat(commonCards);
 
     cards = sort(cards);
-
-    console.log("sorted cards: " + JSON.stringify(cards))
 
     return straightFlush(cards)
         ?? fourOfAKind(cards)
@@ -115,13 +97,10 @@ function findSetofSizeN(cards, n) {
 function straightFlush(cards) {
     currentSuitIndex = 0;
 
-    console.log("straightFlush")
     foundMatch = null;
     while (!foundMatch && currentSuitIndex < 4 ) {
-        console.log("straightFlush - " + "currentSuitIndex: " + currentSuitIndex)
         let cardsInSuit = filterSuit(cards, Suits[currentSuitIndex]);
 
-        console.log('cardsInSuit: ' + JSON.stringify(cardsInSuit))
         let numOfThisSuit = cardsInSuit.length;
 
         currentSuitIndex++;
@@ -147,7 +126,6 @@ function straightFlush(cards) {
 }
 
 function fourOfAKind(cards) {
-    console.log("fourOfAKind")
     let matchFound = findSetofSizeN(cards, 4);
     if(matchFound) {
         return {
@@ -160,7 +138,6 @@ function fourOfAKind(cards) {
 }
 
 function fullHouse(cards) {
-    console.log("fullHouse")
     let trioFound = threeOfAKind(cards);
     if (trioFound) {
         let remainingCards = cards.filter(c => getRank(c) !== trioFound.ranks[0]);
@@ -179,7 +156,6 @@ function fullHouse(cards) {
 }
 
 function flush(cards) {
-    console.log("flush")
     currentSuitIndex = 0;
 
     while (currentSuitIndex < 4 ) {
@@ -206,7 +182,6 @@ function flush(cards) {
 }
 
 function straight(cards) {
-    console.log("straight")
     let startingIndex = 0;
     while (startingIndex < cards.length - 4) {
         for (let i = startingIndex; i <= startingIndex + 5; i ++) {
@@ -226,7 +201,6 @@ function straight(cards) {
 }
 
 function threeOfAKind(cards) {
-    console.log("threeOfAKind")
     let matchFound = findSetofSizeN(cards, 3);
     if(matchFound) {
         return {
@@ -239,7 +213,6 @@ function threeOfAKind(cards) {
 }
 
 function twoPair(cards) {
-    console.log("twoPair")
     let firstPair = pair(cards);
     if (firstPair) {
         let remainingCards = cards.filter(c => getRank(c) !== firstPair.ranks[0]);
@@ -257,7 +230,6 @@ function twoPair(cards) {
 }
 
 function pair(cards) {
-    console.log("pair")
     let matchFound = findSetofSizeN(cards, 2);
     if(matchFound) {
         return {
@@ -270,7 +242,6 @@ function pair(cards) {
 }
 
 function nothing(cards) {
-    console.log("nothing")
     return {
         type: Types.NOTHING,
         ranks: cards.slice(0, 5).map(c => getRank(c))
